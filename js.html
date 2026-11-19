@@ -1,0 +1,65 @@
+<script>
+    function crearTablaContactos() {
+
+        let tabla = document.getElementById('tablaContactos');
+            if(tabla){
+                tabla.remove();
+            }
+
+        google.script.run.withSuccessHandler(function(obj) {
+            tabla = document.createElement('table');
+            tabla.id = 'tablaContactos';
+
+            let tablaHeader = document.createElement('thead');
+            let tablaBody = document.createElement('tbody');
+
+            // [Usando For] Iterar sobre cada fila de la matriz de contactos y crear una fila en la tabla.
+            for (let i = 0; i < obj.length; i++) {
+                let filaActual = obj[i];
+                let fila = document.createElement('tr');
+                for (let j = 0; j < filaActual.length; j++) {
+                    let celdaActual = filaActual[j];
+                    let celda = document.createElement('td');
+                    celda.textContent = celdaActual;
+                    fila.appendChild(celda);
+                }
+                // Agregar la fila al encabezado o al cuerpo de la tabla según corresponda.
+                if (i == 0){
+                    tablaHeader.appendChild(fila);
+                } else {
+                    tablaBody.appendChild(fila);
+                }                
+            }
+
+            // // Iterar sobre cada fila de la matriz de contactos y crear una fila en la tabla.
+            // Array.from(obj).forEach((filaActual, i) => {
+            //     let fila = document.createElement('tr');
+            //     filaActual.forEach(celdaActual => {
+            //         let celda = document.createElement('td');
+            //         celda.textContent = celdaActual;
+            //         fila.appendChild(celda);
+            //     });
+            //     // Agregar la fila al encabezado o al cuerpo de la tabla según corresponda.
+            //     if (i == 0){
+            //         tablaHeader.appendChild(fila);
+            //     } else {
+            //         tablaBody.appendChild(fila);
+            //     }                
+            // });
+
+            // Agregar el cuerpo de la tabla al elemento de la tabla.       
+            tabla.appendChild(tablaHeader);     
+            tabla.appendChild(tablaBody);
+
+            // Agregar clases de Bootstrap a la tabla.
+            tabla.classList.add('table', 'table-striped', 'border', 'border-3');
+
+            // Agregar clase de Bootstrap al encabezado de la tabla.
+            tablaHeader.classList.add('table-dark');
+
+            // Agregar la tabla al div con id "divContactos".
+            document.getElementById('divContactos').appendChild(tabla);
+        } 
+        ).obtenerContactos();
+    }
+</script>
